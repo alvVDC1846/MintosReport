@@ -1,21 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <title>Mintos Report</title>
     </head>
 
     <body>
-        <h3>Current Investments</h3>
-        <input type="file" id="currentInvestmentsFileInput">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <h1 class="display-4">Mintos Report</h1>
+                            <p class="lead">Este es un sitio web donde puedes generar un informe con datos relevantes acerca de tus inversiones en la plataforma de crowdlending Mintos.</p>
+                            <hr class="my-4">
+                            <p>Descarga desde Mintos los archivos necesarios con formato .xlsx, conviértelos a .csv con tu procesador de hojas de cálculo y finalmente selecciónalo desde abajo.</p>
+                            <p>Conforme vayas abriendo los archivos, se irá generando y mostrando la información automáticamente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <h3>Finished Investments</h3>
-        <input type="file" id="finishedInvestmentsFileInput">
+            <form>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-12 col-md-4">
+                        <div class="form-group">
+                            <label for="currentInvestmentsFileInput">Inversiones actuales</label>
+                            <input type="file" class="form-control-file" id="currentInvestmentsFileInput" aria-describedby="currentInvestmentsFileHelp">
+                            <small id="currentInvestmentsFileHelp" class="form-text text-muted">Selecciona el CSV de Current-Investments.</small>
+                        </div>
+                    </div>
 
-        <h3>Account Statement</h3>
-        <input type="file" id="accountStatementFileInput">
+                    <div class="col-lg-4 col-sm-12 col-md-4">
+                        <div class="form-group">
+                            <label for="finishedInvestmentsFileInput">Inversiones finalizadas</label>
+                            <input type="file" class="form-control-file" id="finishedInvestmentsFileInput" aria-describedby="finishedInvestmentsFileHelp">
+                            <small id="finishedInvestmentsFileHelp" class="form-text text-muted">Selecciona el CSV de Finished-Investments.</small>
+                        </div>
+                    </div>
+                
+                    <div class="col-lg-4 col-sm-12 col-md-4">
+                        <div class="form-group">
+                            <label for="accountStatementFileInput">Estado de la cuenta</label>
+                            <input type="file" class="form-control-file" id="accountStatementFileInput" aria-describedby="accountStatementFileHelp">
+                            <small id="accountStatementFileHelp" class="form-text text-muted">Selecciona el CSV de Account-Statement.</small>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
 
         <script src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
         <script src="js/reader.js"></script>
         <script src="js/features.js"></script>
     </body>
