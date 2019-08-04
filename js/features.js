@@ -67,7 +67,7 @@ function listAllLoanOriginatorsWithRating()
         }
     }    
 
-    return result[1].sort();
+    return result.sort();
 }
 
 function listCurrentInvestmentsAreLate()
