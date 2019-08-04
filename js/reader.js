@@ -28,21 +28,18 @@ function changedFileInputListener(event) {
 
         if (event.target == currentInvestmentsFileInput)
         {
-            console.log("current");
             currentInvestmentsHeader = colums[0];
             colums.shift();
             currentInvestments = colums;
         }
         else if (event.target == finishedInvestmentsFileInput)
         {
-            console.log("finished");
             finishedInvestmentsHeader = colums[0];
             colums.shift();
             finishedInvestments = colums;
         }
         else if (event.target == accountStatementFileInput)
         {
-            console.log("account");
             accountStatementHeader = colums[0];
             colums.shift();
             accountStatement = colums;
