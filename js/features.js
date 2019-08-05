@@ -83,3 +83,45 @@ function listCurrentInvestmentsAreLate()
 
     return lateInvestments;
 }
+
+function listLoanOriginatorQuantityInCurrentInvestments()
+{
+    let loanOriginatorsSorted = listColumn(currentInvestments, getColumnPositionFromHeader(LOAN_ORIGINATOR, currentInvestmentsHeader)).sort();
+    let result = new Array(); // LoanOriginatorName/Quantity
+    let lastOriginatorName = "";
+    let counter = 0;
+
+    for (let i=0; i<loanOriginatorsSorted.length; i++)
+    {
+        if (lastOriginatorName != loanOriginatorsSorted[i])
+        {
+            result.push([lastOriginatorName, counter]);
+            lastOriginatorName = loanOriginatorsSorted[i];
+            counter = 1;
+        }
+        else
+        {
+            counter++;
+        }
+    }
+
+    result.shift();
+    return result;
+}
+
+function listLoanOriginatorsFinishedThatAreNotInCurrentInvestments()
+{
+    let currentInvestmentsLoanOriginators = listColumn(currentInvestments, getColumnPositionFromHeader(LOAN_ORIGINATOR, currentInvestmentsHeader));
+    let finishedInvestmentsLoanOriginators = listColumn(finishedInvestments, getColumnPositionFromHeader(LOAN_ORIGINATOR, finishedInvestmentsHeader));
+    let result = new Array();
+
+    for (let i=0; i<finishedInvestmentsLoanOriginators.length; i++)
+    {
+        if (!currentInvestmentsLoanOriginators.includes(finishedInvestmentsLoanOriginators[i]))
+        {
+            result.push(finishedInvestmentsLoanOriginators[i]);
+        }
+    }
+
+    return result;
+}
