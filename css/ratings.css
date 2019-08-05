@@ -1,0 +1,53 @@
+/* This color is not the same as Mintos */
+.ratingColorAPlus {
+    color: #309900;
+    font-weight: bold;
+}
+
+.ratingColorA {
+    color: #97df01;
+    font-weight: bold;
+}
+
+.ratingColorAMinus {
+    color: #b3e301;
+    font-weight: bold;
+}
+
+.ratingColorBPlus {
+    color: #cce600;
+    font-weight: bold;
+}
+
+.ratingColorB {
+    color: #e8ea00;
+    font-weight: bold;
+}
+
+.ratingColorBMinus {
+    color: #ffee18;
+    font-weight: bold;
+}
+
+.ratingColorCPlus {
+    color: #f8ce00;
+    font-weight: bold;
+}
+
+/* This color is not the same as Mintos */
+.ratingColorC {
+    color: #f89500;
+    font-weight: bold;
+}
+
+/* This color is not the same as Mintos */
+.ratingColorCMinus {
+    color: #e46e00;
+    font-weight: bold;
+}
+
+/* This color is not the same as Mintos */
+.ratingColorD {
+    color: #ff0000;
+    font-weight: bold;
+}
