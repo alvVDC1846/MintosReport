@@ -44,6 +44,65 @@ function hideAlert()
     alert.addClass("invisible");
 }
 
+function generateTables(target)
+{
+    if (target == CURRENT_INVESTMENTS_TARGET)
+    {
+        if (areCurrentInvestmentsTablesGenerated == false)
+        {
+            generateTableForLoanOriginatorQuantityInCurrentInvestments();
+            areCurrentInvestmentsTablesGenerated = true;
+            showAlert("info", "Toda la información relacionada con las inversiones actuales se ha generado.");
+        }
+        else
+        {
+            showAlert("warning", "Ya hay información generada, para volver a cargar otros archivos recarga la página.");
+        }
+    }
+    else if (target == FINISHED_INVESTMENTS_TARGET)
+    {
+        if (areFinishedInvestmentsTablesGenerated == false)
+        {
+
+            areFinishedInvestmentsTablesGenerated = true;
+            showAlert("info", "Toda la información relacionada con las inversiones finalizadas se ha generado.");
+        }
+        else
+        {
+            showAlert("warning", "Ya hay información generada, para volver a cargar otros archivos recarga la página.");
+        }
+    }
+    else if (target == ACCOUNT_STATEMENT_TARGET)
+    {
+        if (areAccountStatementTablesGenerated == false)
+        {
+
+            areAccountStatementTablesGenerated = true;
+            showAlert("success", "Toda la información relacionada con el estado de tu cuenta se ha generado.");
+        }
+        else
+        {
+            showAlert("warning", "Ya hay información generada, para volver a cargar otros archivos recarga la página.");
+        }
+    }
+    
+    if ( (target == CURRENT_INVESTMENTS_TARGET || target == FINISHED_INVESTMENTS_TARGET) &&
+            (areCurrentInvestmentsTablesGenerated == true && areFinishedInvestmentsTablesGenerated == true) )
+    {
+        if (areCombinationCurrentAndFinishedInvestmentsTablesGenerated == false)
+        {
+            generateTableForAllLoanOriginatorsInvestedIn();
+            generateTableForLoanOriginatorsFinishedThatAreNotInCurrentInvestments();
+            areCombinationCurrentAndFinishedInvestmentsTablesGenerated = true;
+            showAlert("success", "Toda la información relacionada con las inversiones actuales y finalizadas se ha generado.");
+        }
+        else
+        {
+            showAlert("warning", "Ya hay información generada, para volver a cargar otros archivos recarga la página.");
+        }
+    }
+}
+
 // This function depends on current and finished investments.
 function generateTableForAllLoanOriginatorsInvestedIn() {
     let investmentsLoanOriginators = listAllLoanOriginatorsWithRating();
