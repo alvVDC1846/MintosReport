@@ -91,7 +91,7 @@ function listLoanOriginatorQuantityInCurrentInvestments()
     let lastOriginatorName = "";
     let counter = 0;
 
-    for (let i=0; i<loanOriginatorsSorted.length; i++)
+    for (let i=0; i<=loanOriginatorsSorted.length; i++)
     {
         if (lastOriginatorName != loanOriginatorsSorted[i])
         {
