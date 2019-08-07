@@ -117,7 +117,7 @@ function listLoanOriginatorsFinishedThatAreNotInCurrentInvestments()
 
     for (let i=0; i<finishedInvestmentsLoanOriginators.length; i++)
     {
-        if (!currentInvestmentsLoanOriginators.includes(finishedInvestmentsLoanOriginators[i]))
+        if (!currentInvestmentsLoanOriginators.includes(finishedInvestmentsLoanOriginators[i]) && !result.includes(finishedInvestmentsLoanOriginators[i]))
         {
             result.push(finishedInvestmentsLoanOriginators[i]);
         }

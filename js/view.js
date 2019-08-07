@@ -1,3 +1,4 @@
+// This function depends on current and finished investments.
 function generateTableForAllLoanOriginatorsInvestedIn() {
     let investmentsLoanOriginators = listAllLoanOriginatorsWithRating();
 
@@ -33,6 +34,7 @@ function generateTableForAllLoanOriginatorsInvestedIn() {
     }
 }
 
+// This function depends on current investments only.
 function generateTableForLoanOriginatorQuantityInCurrentInvestments() {
     let data = listLoanOriginatorQuantityInCurrentInvestments();
 
@@ -49,6 +51,7 @@ function generateTableForLoanOriginatorQuantityInCurrentInvestments() {
     }
 }
 
+// This function depends on current and finished investments.
 function generateTableForLoanOriginatorsFinishedThatAreNotInCurrentInvestments() {
     let data = listLoanOriginatorsFinishedThatAreNotInCurrentInvestments();
 
