@@ -1,3 +1,49 @@
+// Alerts
+let alert = $("<div>").attr("role", "alert").appendTo("#alertMessage");
+
+function showAlert(type, message)
+{
+    alert.removeClass();
+    alert.html(message);
+    alert.addClass("alert");
+    
+    switch (type)
+    {
+        case "primary":
+            alert.addClass("alert-primary");
+            break;
+        case "secondary":
+            alert.addClass("alert-secondary");
+            break;
+        case "success":
+            alert.addClass("alert-success");
+            break;
+        case "danger":
+            alert.addClass("alert-danger");
+            break;
+        case "warning":
+            alert.addClass("alert-warning");
+            break;
+        case "info":
+            alert.addClass("alert-info");
+            break;
+        case "light":
+            alert.addClass("alert-light");
+            break;
+        case "dark":
+            alert.addClass("alert-dark");
+            break;
+    }
+
+    alert.addClass("visible");
+}
+
+function hideAlert()
+{
+    alert.removeClass();
+    alert.addClass("invisible");
+}
+
 // This function depends on current and finished investments.
 function generateTableForAllLoanOriginatorsInvestedIn() {
     let investmentsLoanOriginators = listAllLoanOriginatorsWithRating();
