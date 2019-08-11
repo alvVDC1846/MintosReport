@@ -1,6 +1,12 @@
 const LOAN_ORIGINATOR = "Loan Originator";
 const REMAINING_TERM = "Remaining Term";
 const MINTOS_RATINGS = "Mintos Ratings";
+const DETAILS = "Details";
+const DETAILS_DEPOSIT = "Incoming client payment";
+const DETAILS_WITHDRAW = "Withdraw application";
+const DETAILS_INTEREST = "Interest income";
+const TURNOVER = "Turnover";
+const CURRENCY = "Currency";
 
 // List load originators from current and finished investments. It does not show repeated values.
 function listAllLoanOriginators()
@@ -124,4 +130,55 @@ function listLoanOriginatorsFinishedThatAreNotInCurrentInvestments()
     }
 
     return result;
+}
+
+function calculateTotalEuroDeposited()
+{
+    const DETAILS_POS = getColumnPositionFromHeader(DETAILS, accountStatementHeader);
+    const TURNOVER_POS = getColumnPositionFromHeader(TURNOVER, accountStatementHeader);
+    const CURRENCY_POS = getColumnPositionFromHeader(CURRENCY, accountStatementHeader);
+    let totalDeposited = 0;
+
+    for (let i=0; i<accountStatement.length; i++)
+    {
+        if (accountStatement[i][CURRENCY_POS] == "EUR" && accountStatement[i][DETAILS_POS] == DETAILS_DEPOSIT)
+        {
+            totalDeposited += Number(accountStatement[i][TURNOVER_POS]);
+        }
+    }
+    return totalDeposited;
+}
+
+function calculateTotalEuroWithdraw()
+{
+    const DETAILS_POS = getColumnPositionFromHeader(DETAILS, accountStatementHeader);
+    const TURNOVER_POS = getColumnPositionFromHeader(TURNOVER, accountStatementHeader);
+    const CURRENCY_POS = getColumnPositionFromHeader(CURRENCY, accountStatementHeader);
+    let totalWithdraw = 0;
+
+    for (let i=0; i<accountStatement.length; i++)
+    {
+        if (accountStatement[i][CURRENCY_POS] == "EUR" && accountStatement[i][DETAILS_POS] == DETAILS_WITHDRAW)
+        {
+            totalWithdraw += Number(accountStatement[i][TURNOVER_POS]);
+        }
+    }
+    return totalWithdraw;
+}
+
+function calculateTotalEuroInterestIncome()
+{
+    const DETAILS_POS = getColumnPositionFromHeader(DETAILS, accountStatementHeader);
+    const TURNOVER_POS = getColumnPositionFromHeader(TURNOVER, accountStatementHeader);
+    const CURRENCY_POS = getColumnPositionFromHeader(CURRENCY, accountStatementHeader);
+    let totalInterest = 0;
+
+    for (let i=0; i<accountStatement.length; i++)
+    {
+        if (accountStatement[i][CURRENCY_POS] == "EUR" && (accountStatement[i][DETAILS_POS].indexOf(DETAILS_INTEREST) != -1))
+        {
+            totalInterest += Number(accountStatement[i][TURNOVER_POS]);
+        }
+    }
+    return totalInterest;
 }
