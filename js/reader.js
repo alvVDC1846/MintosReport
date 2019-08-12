@@ -14,6 +14,7 @@ var finishedInvestmentsHeader;
 
 var accountStatement;
 var accountStatementHeader;
+var accountStatementSortedByCurrency;
 
 var areCurrentInvestmentsTablesGenerated = false;
 var areFinishedInvestmentsTablesGenerated = false;
@@ -99,6 +100,23 @@ function changedFileInputListener(event) {
 
                         if (accountStatement.length > 0)
                         {
+                            DETAILS_POS = getColumnPositionFromHeader(DETAILS, accountStatementHeader);
+                            TURNOVER_POS = getColumnPositionFromHeader(TURNOVER, accountStatementHeader);
+                            CURRENCY_POS = getColumnPositionFromHeader(CURRENCY, accountStatementHeader);
+
+                            accountStatementSortedByCurrency = accountStatement.slice(0);
+                            accountStatementSortedByCurrency.sort(function(a, b) {
+                                if (a[CURRENCY_POS] < b[CURRENCY_POS])
+                                {
+                                    return -1;
+                                }
+                                if (a[CURRENCY_POS] > b[CURRENCY_POS])
+                                {
+                                    return 1;
+                                }
+                                return 0;
+                            });
+                            
                             generateTables(ACCOUNT_STATEMENT_TARGET);
                         }
                         else

@@ -8,6 +8,10 @@ const DETAILS_INTEREST = "Interest income";
 const TURNOVER = "Turnover";
 const CURRENCY = "Currency";
 
+var DETAILS_POS;
+var TURNOVER_POS;
+var CURRENCY_POS;
+
 // List load originators from current and finished investments. It does not show repeated values.
 function listAllLoanOriginators()
 {
@@ -132,53 +136,74 @@ function listLoanOriginatorsFinishedThatAreNotInCurrentInvestments()
     return result;
 }
 
-function calculateTotalEuroDeposited()
+function calculateTotalDeposited()
 {
-    const DETAILS_POS = getColumnPositionFromHeader(DETAILS, accountStatementHeader);
-    const TURNOVER_POS = getColumnPositionFromHeader(TURNOVER, accountStatementHeader);
-    const CURRENCY_POS = getColumnPositionFromHeader(CURRENCY, accountStatementHeader);
     let totalDeposited = 0;
+    let depositedCurrencies = new Array(); // Total deposited, currency
+    let lastCurrency = accountStatementSortedByCurrency[0][CURRENCY_POS];
 
-    for (let i=0; i<accountStatement.length; i++)
+    for (let i=0; i<accountStatementSortedByCurrency.length; i++)
     {
-        if (accountStatement[i][CURRENCY_POS] == "EUR" && accountStatement[i][DETAILS_POS] == DETAILS_DEPOSIT)
+        if (accountStatementSortedByCurrency[i][CURRENCY_POS] == lastCurrency && accountStatementSortedByCurrency[i][DETAILS_POS] == DETAILS_DEPOSIT)
         {
-            totalDeposited += Number(accountStatement[i][TURNOVER_POS]);
+            totalDeposited += Number(accountStatementSortedByCurrency[i][TURNOVER_POS]);
         }
+        else if (accountStatementSortedByCurrency[i][CURRENCY_POS] != lastCurrency && accountStatementSortedByCurrency[i][DETAILS_POS] == DETAILS_DEPOSIT)
+        {
+            depositedCurrencies.push([totalDeposited, lastCurrency]);
+            totalDeposited = Number(accountStatementSortedByCurrency[i][TURNOVER_POS]);
+            lastCurrency = accountStatementSortedByCurrency[i][CURRENCY_POS];
+        }
+        if (i == accountStatementSortedByCurrency.length-1)
+            depositedCurrencies.push([totalDeposited, lastCurrency]);
     }
-    return totalDeposited;
+    return depositedCurrencies;
 }
 
-function calculateTotalEuroWithdraw()
+function calculateTotalWithdraw()
 {
-    const DETAILS_POS = getColumnPositionFromHeader(DETAILS, accountStatementHeader);
-    const TURNOVER_POS = getColumnPositionFromHeader(TURNOVER, accountStatementHeader);
-    const CURRENCY_POS = getColumnPositionFromHeader(CURRENCY, accountStatementHeader);
     let totalWithdraw = 0;
+    let withdrawedCurrencies = new Array(); // Total withdrawed, currency
+    let lastCurrency = accountStatementSortedByCurrency[0][CURRENCY_POS];
 
-    for (let i=0; i<accountStatement.length; i++)
+    for (let i=0; i<accountStatementSortedByCurrency.length; i++)
     {
-        if (accountStatement[i][CURRENCY_POS] == "EUR" && accountStatement[i][DETAILS_POS] == DETAILS_WITHDRAW)
+        if (accountStatementSortedByCurrency[i][CURRENCY_POS] == lastCurrency && accountStatementSortedByCurrency[i][DETAILS_POS] == DETAILS_WITHDRAW)
         {
-            totalWithdraw += Number(accountStatement[i][TURNOVER_POS]);
+            totalWithdraw += Number(accountStatementSortedByCurrency[i][TURNOVER_POS]);
         }
+        else if (accountStatementSortedByCurrency[i][CURRENCY_POS] != lastCurrency && accountStatementSortedByCurrency[i][DETAILS_POS] == DETAILS_WITHDRAW)
+        {
+            withdrawedCurrencies.push([totalWithdraw, lastCurrency]);
+            totalWithdraw = Number(accountStatementSortedByCurrency[i][TURNOVER_POS]);
+            lastCurrency = accountStatementSortedByCurrency[i][CURRENCY_POS];
+        }
+        if (i == accountStatementSortedByCurrency.length-1)
+            withdrawedCurrencies.push([totalWithdraw, lastCurrency]);
     }
-    return totalWithdraw;
+    return withdrawedCurrencies;
 }
 
-function calculateTotalEuroInterestIncome()
+function calculateTotalInterestIncome()
 {
-    const DETAILS_POS = getColumnPositionFromHeader(DETAILS, accountStatementHeader);
-    const TURNOVER_POS = getColumnPositionFromHeader(TURNOVER, accountStatementHeader);
-    const CURRENCY_POS = getColumnPositionFromHeader(CURRENCY, accountStatementHeader);
     let totalInterest = 0;
+    let interestCurrencies = new Array(); // Total interest gained, currency
+    let lastCurrency = accountStatementSortedByCurrency[0][CURRENCY_POS];
 
-    for (let i=0; i<accountStatement.length; i++)
+    for (let i=0; i<accountStatementSortedByCurrency.length; i++)
     {
-        if (accountStatement[i][CURRENCY_POS] == "EUR" && (accountStatement[i][DETAILS_POS].indexOf(DETAILS_INTEREST) != -1))
+        if (accountStatementSortedByCurrency[i][CURRENCY_POS] == lastCurrency && (accountStatementSortedByCurrency[i][DETAILS_POS].indexOf(DETAILS_INTEREST) != -1))
         {
-            totalInterest += Number(accountStatement[i][TURNOVER_POS]);
+            totalInterest += Number(accountStatementSortedByCurrency[i][TURNOVER_POS]);
         }
+        else if (accountStatementSortedByCurrency[i][CURRENCY_POS] != lastCurrency && (accountStatementSortedByCurrency[i][DETAILS_POS].indexOf(DETAILS_INTEREST) != -1))
+        {
+            interestCurrencies.push([totalInterest, lastCurrency]);
+            totalInterest = Number(accountStatementSortedByCurrency[i][TURNOVER_POS]);
+            lastCurrency = accountStatementSortedByCurrency[i][CURRENCY_POS];
+        }
+        if (i == accountStatementSortedByCurrency.length-1)
+            interestCurrencies.push([totalInterest, lastCurrency]);
     }
-    return totalInterest;
+    return interestCurrencies;
 }
