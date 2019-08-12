@@ -76,7 +76,8 @@ function generateTables(target)
     {
         if (areAccountStatementTablesGenerated == false)
         {
-
+            generateTableForTotalDepositedAndWithdrawed();
+            generateTableForGainedInterest();
             areAccountStatementTablesGenerated = true;
             showAlert("success", "Toda la información relacionada con el estado de tu cuenta se ha generado.");
         }
@@ -107,8 +108,8 @@ function generateTables(target)
 function generateTableForAllLoanOriginatorsInvestedIn() {
     let investmentsLoanOriginators = listAllLoanOriginatorsWithRating();
 
-    $("<h5>").html("Todos los originadores de préstamos con los que has invertido").appendTo("#investmentsLoanOriginatorsDiv");
-    let table = $("<table>").addClass("table").appendTo("#investmentsLoanOriginatorsDiv");
+    $("<h5>").html("Todos los originadores de préstamos con los que has invertido").appendTo("#firstRowFirstColumn");
+    let table = $("<table>").addClass("table").appendTo("#firstRowFirstColumn");
     $("<thead>").html("<tr><th>Nombre</th><th>Evaluación</th></tr>").appendTo(table);
     let tbody = $("<tbody>").appendTo(table);
 
@@ -143,8 +144,8 @@ function generateTableForAllLoanOriginatorsInvestedIn() {
 function generateTableForLoanOriginatorQuantityInCurrentInvestments() {
     let data = listLoanOriginatorQuantityInCurrentInvestments();
 
-    $("<h5>").html("Cantidad de inversiones actuales por cada originador de préstamos").appendTo("#loanOriginatorQuantityInCurrentInvestmentsDiv");
-    let table = $("<table>").addClass("table").appendTo("#loanOriginatorQuantityInCurrentInvestmentsDiv");
+    $("<h5>").html("Cantidad de inversiones actuales por cada originador de préstamos").appendTo("#firstRowSecondColumn");
+    let table = $("<table>").addClass("table").appendTo("#firstRowSecondColumn");
     $("<thead>").html("<tr><th>Nombre</th><th>Cantidad</th></tr>").appendTo(table);
     let tbody = $("<tbody>").appendTo(table);
 
@@ -160,8 +161,8 @@ function generateTableForLoanOriginatorQuantityInCurrentInvestments() {
 function generateTableForLoanOriginatorsFinishedThatAreNotInCurrentInvestments() {
     let data = listLoanOriginatorsFinishedThatAreNotInCurrentInvestments();
 
-    $("<h5>").html("Originadores de préstamos en los que invertistes y ahora no tienes ninguna inversión con ellos").appendTo("#loanOriginatorsFinishedThatAreNotInCurrentInvestmentsDiv");
-    let table = $("<table>").addClass("table").appendTo("#loanOriginatorsFinishedThatAreNotInCurrentInvestmentsDiv");
+    $("<h5>").html("Originadores de préstamos en los que invertistes y ahora no tienes ninguna inversión con ellos").appendTo("#firstRowThirdColumn");
+    let table = $("<table>").addClass("table").appendTo("#firstRowThirdColumn");
     $("<thead>").html("<tr><th>Nombre</th></tr>").appendTo(table);
     let tbody = $("<tbody>").appendTo(table);
 
@@ -169,5 +170,72 @@ function generateTableForLoanOriginatorsFinishedThatAreNotInCurrentInvestments()
     {
         let row = $("<tr>").appendTo(tbody);
         $("<td>").html(data[i]).appendTo(row);
+    }
+}
+
+// This function only depends on account statement.
+function generateTableForTotalDepositedAndWithdrawed()
+{
+    let deposited = calculateTotalDeposited();
+    let withdrawed = calculateTotalWithdraw();
+
+    $("<h4>").html("Transferencias").appendTo("#secondRow");
+    let table = $("<table>").addClass("table").appendTo("#secondRow");
+    $("<thead>").html("<tr><th>Total depositado</th><th>Total retirado</th><th>Total</th><th>Divisa</th></tr>").appendTo(table);
+    let tbody = $("<tbody>").appendTo(table);
+
+    for (let i=0; i<deposited.length; i++)
+    {
+        let row = $("<tr>").appendTo(tbody);
+        $("<td>").html(deposited[i][0]).appendTo(row);
+        let withdrawedQuantity = 0;
+
+        for (let j=0; j<withdrawed.length; j++)
+        {
+            if (withdrawed[j][1] == deposited[i][1])
+            {
+                withdrawedQuantity = withdrawed[j][0];
+            }
+        }
+
+        $("<td>").html(withdrawedQuantity).appendTo(row);
+        $("<td>").html(deposited[i][0]+withdrawedQuantity).appendTo(row);
+        $("<td>").html(deposited[i][1]).appendTo(row);
+    }
+}
+
+// This function only depends on account statement.
+function generateTableForGainedInterest()
+{
+    let deposited = calculateTotalDeposited();
+    let withdrawed = calculateTotalWithdraw();
+    let interest = calculateTotalInterestIncome();
+
+    $("<h4>").html("Intereses").appendTo("#thirdRow");
+    let table = $("<table>").addClass("table").appendTo("#thirdRow");
+    $("<thead>").html("<tr><th>Intereses ganados</th><th>Porcentaje</th><th>Divisa</th></tr>").appendTo(table);
+    let tbody = $("<tbody>").appendTo(table);
+
+    for (let i=0; i<interest.length; i++)
+    {
+        let row = $("<tr>").appendTo(tbody);
+        $("<td>").html(interest[i][0]).appendTo(row);
+
+        let totalDeposited = 0;
+        for (let j=0; j<deposited.length; j++)
+        {
+            if (deposited[j][1] == interest[i][1])
+                totalDeposited = deposited[j][0];                
+        }
+
+        let totalWithdrawed = 0;
+        for (let j=0; j<withdrawed.length; j++)
+        {
+            if (withdrawed[j][1] == interest[i][1])
+                totalWithdrawed = withdrawed[j][0];                
+        }
+
+        $("<td>").html(interest[i][0]/(totalDeposited+totalWithdrawed)*100).appendTo(row);
+        $("<td>").html(interest[i][1]).appendTo(row);
     }
 }
