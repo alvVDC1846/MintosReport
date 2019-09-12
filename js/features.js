@@ -7,10 +7,12 @@ const DETAILS_WITHDRAW = "Withdraw application";
 const DETAILS_INTEREST = "Interest income";
 const TURNOVER = "Turnover";
 const CURRENCY = "Currency";
+const DATE = "Date";
 
 var DETAILS_POS;
 var TURNOVER_POS;
 var CURRENCY_POS;
+var DATE_POS;
 
 // List load originators from current and finished investments. It does not show repeated values.
 function listAllLoanOriginators()

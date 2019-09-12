@@ -239,3 +239,39 @@ function generateTableForGainedInterest()
         $("<td>").html(interest[i][1]).appendTo(row);
     }
 }
+
+// This function only depends on account statement.
+function generateChartForAccumulatedInterest()
+{
+    let totalInterest = 0;
+    let accumulatedInterest = new Array();
+    let dates = new Array();
+
+    for (let i=0; i<accountStatement.length; i++)
+    {
+        if (accountStatement[i][DETAILS_POS].indexOf(DETAILS_INTEREST) != -1)
+        {
+            totalInterest += Number(accountStatement[i][TURNOVER_POS]);
+            accumulatedInterest.push(totalInterest);
+            dates.push(accountStatement[i][DATE_POS]);
+        }
+    }
+
+
+    
+    var ctx = document.getElementById("interestCanvas").getContext("2d");
+
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: "EUR",
+                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: accumulatedInterest
+            }]
+        },
+        options: {}
+    });
+}

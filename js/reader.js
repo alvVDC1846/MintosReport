@@ -103,6 +103,7 @@ function changedFileInputListener(event) {
                             DETAILS_POS = getColumnPositionFromHeader(DETAILS, accountStatementHeader);
                             TURNOVER_POS = getColumnPositionFromHeader(TURNOVER, accountStatementHeader);
                             CURRENCY_POS = getColumnPositionFromHeader(CURRENCY, accountStatementHeader);
+                            DATE_POS = getColumnPositionFromHeader(DATE, accountStatementHeader);
 
                             accountStatementSortedByCurrency = accountStatement.slice(0);
                             accountStatementSortedByCurrency.sort(function(a, b) {
@@ -116,7 +117,7 @@ function changedFileInputListener(event) {
                                 }
                                 return 0;
                             });
-                            
+
                             generateTables(ACCOUNT_STATEMENT_TARGET);
                         }
                         else
